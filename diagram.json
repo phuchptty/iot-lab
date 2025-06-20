@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "author": "Optimized wiring, no overlap with components",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir_room",
+      "top": 23.2,
+      "left": -314.58,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-pir-motion-sensor",
+      "id": "pir_dorm",
+      "top": 205.6,
+      "left": 184.62,
+      "attrs": {}
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht_water",
+      "top": 221.1,
+      "left": -139.8,
+      "attrs": { "humidity": "77.5" }
+    },
+    { "type": "wokwi-relay-module", "id": "relay_light", "top": -163, "left": -432, "attrs": {} },
+    { "type": "wokwi-relay-module", "id": "relay_device", "top": 125, "left": 489.6, "attrs": {} },
+    { "type": "wokwi-servo", "id": "servo_pump", "top": 266.8, "left": -412.8, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "led_light",
+      "top": -10.8,
+      "left": -166.2,
+      "rotate": 90,
+      "attrs": { "color": "yellow" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_device",
+      "top": 188.4,
+      "left": 339.8,
+      "attrs": { "color": "green" }
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "pir_room:VCC", "esp:VIN", "red", [ "v50", "h-200" ] ],
+    [ "pir_room:GND", "esp:GND.2", "black", [ "v50", "h-200" ] ],
+    [ "pir_room:OUT", "esp:27", "green", [ "v50", "h-150" ] ],
+    [ "pir_dorm:VCC", "esp:VIN", "red", [ "v50", "h200" ] ],
+    [ "pir_dorm:GND", "esp:GND.2", "black", [ "v50", "h200" ] ],
+    [ "pir_dorm:OUT", "esp:26", "green", [ "v50", "h250" ] ],
+    [ "dht_water:VCC", "esp:VIN", "red", [ "v200", "h50" ] ],
+    [ "dht_water:GND", "esp:GND.2", "black", [ "v200", "h50" ] ],
+    [ "dht_water:SDA", "esp:21", "green", [ "v200", "h100" ] ],
+    [ "relay_light:VCC", "esp:VIN", "red", [ "v-50", "h300" ] ],
+    [ "relay_light:GND", "esp:GND.2", "black", [ "v-50", "h300" ] ],
+    [ "relay_light:IN", "esp:14", "orange", [ "v-50", "h350" ] ],
+    [ "relay_light:COM", "esp:3V3", "red", [ "v-50", "h350" ] ],
+    [ "led_light:A", "relay_light:NO", "yellow", [ "v-50", "h400" ] ],
+    [ "led_light:C", "esp:GND.2", "black", [ "v-100", "h400" ] ],
+    [ "relay_device:VCC", "esp:VIN", "red", [ "v250", "h300" ] ],
+    [ "relay_device:GND", "esp:GND.2", "black", [ "v250", "h300" ] ],
+    [ "relay_device:IN", "esp:12", "orange", [ "v250", "h350" ] ],
+    [ "relay_device:COM", "esp:3V3", "red", [ "v250", "h350" ] ],
+    [ "led_device:A", "relay_device:NO", "red", [ "v250", "h400" ] ],
+    [ "led_device:C", "esp:GND.2", "black", [ "v300", "h400" ] ],
+    [ "servo_pump:V+", "esp:VIN", "red", [ "v200", "h-150" ] ],
+    [ "servo_pump:GND", "esp:GND.2", "black", [ "v200", "h-150" ] ],
+    [ "servo_pump:PWM", "esp:13", "blue", [ "v200", "h-100" ] ]
+  ],
+  "dependencies": {}
+}

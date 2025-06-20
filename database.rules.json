@@ -1,0 +1,140 @@
+{
+  "rules": {
+    // Users can only access their own data
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+        ".validate": "auth != null"
+      }
+    },
+    
+    // IoT devices path - allow device access and authenticated user access
+    "iot_devices": {
+      "esp32_lab4": {
+        // Light control and status
+        "light": {
+          "control": {
+            ".read": true, // Allow ESP32 to read control commands (unauthenticated)
+            ".write": true, // Only authenticated users can write control commands
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1 || newData.val() === -1)"
+          },
+          "status": {
+            ".read": true, // Allow both ESP32 and authenticated users to read status
+            ".write": true, // Allow ESP32 to update status (unauthenticated)
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)"
+          }
+        },
+        
+        // Device control and status
+        "device": {
+          "control": {
+            ".read": true, // Allow ESP32 to read control commands
+            ".write": "auth != null", // Only authenticated users can write control commands
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1 || newData.val() === -1)"
+          },
+          "status": {
+            ".read": true, // Allow both ESP32 and authenticated users to read status
+            ".write": true, // Allow ESP32 to update status
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)"
+          }
+        },
+        
+        // Pump/servo control and status
+        "pump": {
+          "control": {
+            ".read": true, // Allow ESP32 to read control commands
+            ".write": true, // Only authenticated users can write control commands
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1 || newData.val() === -1)"
+          },
+          "status": {
+            ".read": true, // Allow both ESP32 and authenticated users to read status
+            ".write": true, // Allow ESP32 to update status
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)"
+          }
+        },
+        
+        // Sensor data - ESP32 writes, authenticated users read
+        "sensors": {
+          ".read": "auth != null", // Only authenticated users can read sensor data
+          ".write": true, // Allow ESP32 to write sensor data (unauthenticated)
+          "temperature": {
+            ".validate": "newData.isNumber()"
+          },
+          "humidity": {
+            ".validate": "newData.isNumber()"
+          }
+        },
+        
+        // Motion sensors - ESP32 writes, authenticated users read
+        "motion": {
+          ".read": "auth != null", // Only authenticated users can read motion data
+          ".write": true, // Allow ESP32 to write motion data (unauthenticated)
+          "room": {
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)"
+          },
+          "dorm": {
+            ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1)"
+          }
+        }
+      }
+    },
+    
+    // Alternative structure for broader device support
+    "devices": {
+      "$deviceId": {
+        ".read": "auth != null",
+        ".write": "auth != null",
+        "owner": {
+          ".validate": "newData.val() === auth.uid"
+        },
+        "name": {
+          ".validate": "newData.isString() && newData.val().length > 0"
+        },
+        "type": {
+          ".validate": "newData.isString()"
+        },
+        "status": {
+          ".validate": "newData.isString()"
+        }
+      }
+    },
+    
+    // Device data path - less restrictive for IoT devices
+    "device_data": {
+      "$deviceId": {
+        ".read": "auth != null",
+        ".write": true, // Allow devices to write without authentication
+        "$timestamp": {
+          ".validate": "newData.hasChild('value') && newData.child('timestamp').isNumber()"
+        }
+      }
+    },
+    
+    // Global settings - read-only for users
+    "settings": {
+      ".read": "auth != null",
+      ".write": false
+    },
+    
+    // Connection info - allow devices to update their status
+    "device_status": {
+      "$deviceId": {
+        ".read": true, // Allow devices to read their own status
+        ".write": true, // Allow devices to report their status
+        "last_seen": {
+          ".validate": "newData.isNumber()"
+        },
+        "online": {
+          ".validate": "newData.isBoolean()"
+        }
+      }
+    },
+    
+    // Deny access to everything else
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

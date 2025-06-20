@@ -1,0 +1,191 @@
+/* Custom CSS for IoT Lab2 Controller */
+
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Device Icons */
+.device-icon {
+    font-size: 3rem;
+    transition: all 0.3s ease;
+}
+
+.device-icon.active {
+    color: #28a745 !important;
+    transform: scale(1.1);
+}
+
+/* Status Text */
+.status-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.status-text.on {
+    color: #28a745;
+}
+
+.status-text.off {
+    color: #6c757d;
+}
+
+/* Motion Detection */
+.motion-indicator {
+    padding: 15px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+    border: 2px solid #e9ecef;
+}
+
+.motion-indicator.active {
+    background-color: #28a745;
+    border-color: #28a745;
+    animation: pulse 1s infinite;
+}
+
+.motion-icon {
+    font-size: 2rem;
+    color: #6c757d;
+    transition: color 0.3s ease;
+}
+
+.motion-indicator.active .motion-icon {
+    color: white;
+}
+
+/* Pulse Animation */
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* MQTT Status */
+.mqtt-connected {
+    background-color: #28a745 !important;
+}
+
+.mqtt-disconnected {
+    background-color: #dc3545 !important;
+}
+
+/* Card Hover Effects */
+.card {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Button Styles */
+.btn {
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Progress Bars */
+.progress {
+    height: 8px;
+    border-radius: 4px;
+}
+
+/* Temperature/Humidity Values */
+.display-4 {
+    font-weight: 300;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .device-icon {
+        font-size: 2rem;
+    }
+    
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .motion-icon {
+        font-size: 1.5rem;
+    }
+}
+
+/* Loading Animation */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Connection Status Indicator */
+.connection-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    padding: 10px 15px;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.connection-indicator.connected {
+    background-color: #28a745;
+    color: white;
+}
+
+.connection-indicator.disconnected {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Navbar Brand Animation */
+.navbar-brand {
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand:hover {
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
